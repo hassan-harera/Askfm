@@ -1,27 +1,43 @@
 package Main;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.sql.*;
 
-@WebServlet(name = "LoginCheck", urlPatterns = {"/LoginCheck"})
-public class LoginCheck extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+public class LoginCheck {
 
-        String uname = (String) request.getAttribute("username");
-        String upass = (String) request.getAttribute("password");
+    public static Boolean checkUsername(String username) {
+        PreparedStatement ps;
 
-        User user = new User();
-        if (user.login(uname, upass)) {
-            response.sendRedirect("wall.jsp");
-        } else {
-            response.sendRedirect("wall.jsp");
+        var query = "select * from users where username = ?;";
+        try {
+            ps = MyConnection.con().prepareStatement(query);
+
+            ps.setString(1, username);
+            if (ps.executeQuery().next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
+        return false;
     }
+
+    public static Boolean checkPassword(String username, String password) {
+        PreparedStatement ps;
+
+        var query = "select username from users where username = ? and password = ?;";
+        try {
+            ps = MyConnection.con().prepareStatement(query);
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+            if (ps.executeQuery().next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
+    }
+
 }

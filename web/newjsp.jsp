@@ -1,20 +1,22 @@
-
 <%@page import="Main.Signup"%>
 <html lang="en" dir="ltr">
+
     <head>
-
         <title>Sign up | ASKfm</title>
-
-        <link rel="stylesheet" media="all" href="css/login.css" data-turbolinks-track="reload" />
-        <script src="js/scripts.js" data-turbolinks-track="reload"></script>
+        <meta name="description" content="Find out what people want to know about you. Ask questions and get answers on any topic!" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+        <meta name="csrf-param" content="authenticity_token" />
+        <meta name="csrf-token" content="vU3/phmx0RmIXjy/KgIi6oCs6s/Czri7Fid+oC2uHOU95z8SFU76U4lqDgAUTzLht0q7/uxtYoR1oVTHO/5FPw==" />
+        <!--<link rel="" href="js/scripts.js" />-->
+        <link rel="stylesheet" media="all" href="css/login.css" />
         <meta name="turbolinks-cache-control" content="no-cache" />
-
     </head>
 
 
     <body class="theme-4 dialogBody" data-id="signup/new">
 
-        <div id="loaderMother" style="display:none"></div>
+
+
 
         <main id="contentArea" class="rsp-container">
 
@@ -25,9 +27,10 @@
                 <div class="main-column util-clearfix">
 
 
-                    <form id="signupNewForm" class="signupForm" autocomplete="off" data-action="SubmitWithTimezone" action="SignUp.jsp" accept-charset="UTF-8" method="post" >
-                        <input name="utf8" type="hidden" value="&#x2713;" />
-                        <input type="hidden" name="authenticity_token" value="mY/9IURBBDxD2oEZhjJiL32vXHPg4tM1cl0FuyTJmMAZJT2VSL4vdkLus6a4f3IkSkkNQs5BCQoR2y/cMpnBGg==" />
+
+
+
+                    <form id="signupNewForm" class="signupForm" autocomplete="off" data-action="SubmitWithTimezone" action="SignUp.jsp" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="mY/9IURBBDxD2oEZhjJiL32vXHPg4tM1cl0FuyTJmMAZJT2VSL4vdkLus6a4f3IkSkkNQs5BCQoR2y/cMpnBGg==" />
 
 
                         <div class="simpleFormHeading rsp-gte-tablet">
@@ -72,6 +75,15 @@
                                 <option value="female">Female</option>
                             </select>
 
+                            <h3 class="simpleFormLabel" style="display:none">Login</h3>
+                            <div class="inputFormPadding" style="display:none">
+                                <input class="inputForm" maxlength="30" placeholder="Full name"  data-input="LoginSuggest" data-show-on-error="true" size="30" type="text" name="user[name]" />
+                            </div>
+                            <h3 class="simpleFormLabel" style="display:none">Username</h3>
+                            <div class="inputFormPadding suggest-input" style="display:none">
+                                <input class="inputForm1" maxlength="40" placeholder="Username"  data-input="LoginCheck" data-url="/signup/suggest" data-show-on-error="true" size="40" type="text" name="user[login]" id="user_login" />
+                                <a class="icon-reload" data-action="LoginReset" href="#"></a>
+                            </div>
                         </div>
 
                         <div class="simpleFormItem">
@@ -234,41 +246,57 @@
                                                 <option value="1921">1921</option>
                                                 <option value="1920">1920</option>
                                             </select>
+
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div> 
-                        <input type="submit" class="btn-primary-wide" value="Sign up">
+                        </div>
+
+
+                        <div class="captcha-container " style="display:none" data-url="/signup/captcha"></div>
+
+                        <div class="simpleFormItem" >
+                            <input type="submit" class="btn-primary-wide" value="Sign up">
+                        </div>
                     </form>
                 </div> 
             </div>
-            <%
-                String username = (String) request.getParameter("user[username]");
-                String password = (String) request.getParameter("user[password]");
-                String repassword = (String) request.getParameter("user[repassword]");
-                String name = (String) request.getParameter("user[name]");
-                String answer = (String) request.getParameter("user[answer]");
-                String gender = (String) request.getParameter("user[gender]");
-                String day = (String) request.getParameter("user[day]");
-                String month = (String) request.getParameter("user[month]");
-                String year = (String) request.getParameter("user[year]");
-                String date = year + "-" + month + "-" + day;
-
-//                out.println(username + " " + password + " " + repassword + " " + name + " " + answer + " " + gender + " " + date);
-                if (username != null) {
-                    if (!password.equals(repassword)) {
-
-                    } else if (Signup.checkUsername(username)) {
-                        
-                    } else {
-                        Signup.insertNewUser(username, password, gender, answer, name, date);
-                        response.sendRedirect("wall.jsp");
-                    }
-                }
-            %>
         </main>
 
+
+        <%
+            String username = (String) request.getParameter("user[username]");
+            String password = (String) request.getParameter("user[password]");
+            String repassword = (String) request.getParameter("user[repassword]");
+            String name = (String) request.getParameter("user[name]");
+            String answer = (String) request.getParameter("user[answer]");
+            String gender = (String) request.getParameter("user[gender]");
+            String day = (String) request.getParameter("user[day]");
+            String month = (String) request.getParameter("user[month]");
+            String year = (String) request.getParameter("user[year]");
+            String date = year + "-" + month + "-" + day;
+
+            out.println(username + " " + password + " " + repassword + " " + name + " " + answer + " " + gender + " " + date);
+            if (username != null) {
+                if (!password.equals(repassword)) {
+
+                } else if (!Signup.checkUsername(username)) {
+
+                } else {
+                    Signup.insertNewUser(username, password, gender, answer, name, date);
+//                                request.setAttribute("username", username);
+                    response.sendRedirect("wall.jsp");
+                }
+            }
+        %>
+
+
     </body>
+
+
+
+
+
 </html>
 

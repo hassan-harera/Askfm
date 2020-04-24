@@ -1,6 +1,5 @@
-
-
 <%@page import="Main.LoginCheck"%>
+
 <html lang="en" dir="ltr">
     <head>
 
@@ -82,11 +81,11 @@
                         <div class="inputFormBox">
                             <h3 class="simpleFormLabel">Username</h3>
                             <div class="inputFormPadding">
-                                <input type="text" name="username" class="inputForm" required maxlength="40" placeholder="Username" autocomplete="username" autofocus="autofocus" data-input="CaptchaReload" />
+                                <input type="text" name="username" class="inputForm" required maxlength="40" placeholder="Username" autocomplete="off" autofocus="autofocus" data-input="CaptchaReload" />
                             </div>
                             <h3 class="simpleFormLabel">Password</h3>
                             <div class="inputFormPadding">
-                                <input type="password" name="password" class="inputForm" required maxlength="20" placeholder="Password" autocomplete="current-password" />
+                                <input type="password" name="password" class="inputForm" required maxlength="20" placeholder="Password" autofocus="autofocus" autocomplete="off" />
                             </div>
                         </div>
 
@@ -110,15 +109,14 @@
         <%
             String username = (String) request.getParameter("username");
             String password = (String) request.getParameter("password");
+            if (username != null) {
+                if (!LoginCheck.checkUsername(username)) {
 
-            if (!LoginCheck.checkUsername(username)) {
-                out.println("<div style=\"display: none;\" class=\"flash-message alert\">\n"
-                        + "  <p class=\"util-relative rsp-container\">Please verify you?re a human!<a href=\"\" class=\"icon-close\" data-action=\"FlashHide\"></a></p></div>");
-            } else if (!LoginCheck.checkPassword(username, password)) {
-                out.println("<div style=\"display: none;\" class=\"flash-message alert\">\n"
-                        + "  <p class=\"util-relative rsp-container\">Please verify you?re a human!<a href=\"\" class=\"icon-close\" data-action=\"FlashHide\"></a></p></div>");
-            } else {
-                response.sendRedirect("wall.jsp");
+                } else if (!LoginCheck.checkPassword(username, password)) {
+
+                } else {
+                    response.sendRedirect("/wall.jsp");
+                }
             }
         %>
 
